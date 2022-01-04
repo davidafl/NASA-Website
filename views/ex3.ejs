@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="/js/myfunctions.js"></script>
+    <link href="/css/mycss.css" rel="stylesheet">
+    <title>Exercise 3 - Internet Programming Course template</title>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div id="loading" class="d-none"></div>
+    <div class="row text-center"
+         style="background-image: url('https://www.science.org.au/curious/sites/default/files/article-banner-image/2-mars-banner.jpg');
+          background-repeat: no-repeat;
+          background-position:center;
+          ">
+
+        <div class="col-12 text-center text-white">
+            <h1>Mars Image Browser</h1>
+            <h5>Browse NASA Mars images and save your prefered ones.</h5>
+            <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Who is submitting
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="alert alert-primary mt-2 fw-bold" role="alert">
+                <h4>Search Images:</h4>
+            </div>
+
+            <form id="searchform" >
+
+                <label for="dateid" class="form-label is-invalid">Date: (YYYY-MM-DD) or Sol</label>
+                <input class="form-control inputentry" id="dateid" placeholder="enter date..." required>
+                <div class="text-danger errormessage"></div>
+
+                <label for="missionid" class="form-label">Mission:</label>
+                <select class="form-select inputentry" aria-label="Default select example" id="missionid" required>
+                    <option selected value="">Choose a rover</option>
+                    <option value="Curiosity">Curiosity</option>
+                    <option value="Spirit">Spirit</option>
+                    <option value="Opportunity">Opportunity</option>
+                </select>
+
+                <label for="cameraid" class="form-label">Camera:</label>
+                <select class="form-select inputentry" aria-label="Default select example" id="cameraid" required>
+                    <option selected value="">Choose a Camera</option>
+                    <option value="FHAZ">FHAZ</option>
+                    <option value="RHAZ">RHAZ</option>
+                    <option value="MAST">MAST</option>
+                    <option value="CHEMCAM">CHEMCAM</option>
+                    <option value="MAHLI">MAHLI</option>
+                    <option value="MARDI">MARDI</option>
+                    <option value="NAVCAM">NAVCAM</option>
+                    <option value="PANCAM">PANCAM</option>
+                    <option value="MINITES">MINITES</option>
+                </select>
+
+                <div class="d-grid gap-2">
+                    <input class="btn btn-primary mt-2" type="submit" value="search">
+                    <button class="btn btn-primary mt-1" type="button" id="clearbtn">Clear</button>
+                </div>
+            </form>
+
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="alert alert-primary mt-2 fw-bold" role="alert">
+                <h4>Saved Images</h4>
+            </div>
+            <div>
+                <ol id="savedlist">
+                </ol>
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="button" id="startslide">Start Slide Show</button>
+                <button class="btn btn-primary" type="button" id="stopslide">Stop Slide Show</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-around">
+        <div class="col-6">
+            <div id="carousel" class="carousel slide d-none" data-bs-ride="carousel">
+                <div class="carousel-inner mt-2" id="innercarousel">
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-primary mt-2 fw-bold" role="alert">
+                <h4>search Results:</h4>
+            </div>
+            <div class="row" id="cardsid">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for -->
+<div class="modal" tabindex="-1" id="errormodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errormodalmsg">image already saved</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Personal Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Name: David Aflalo</li>
+                    <li>Email: davidaf@edu.hac.ac.il</li>
+                    <li>ID: 317706794</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -6,8 +6,7 @@ var router = express.Router();
 // to prevent client tampering
 const keys = ['foobar']
 
-let usersDB = require ('../models/users-delete')
-let User = require('../models/user-delete')
+let db = require ('../models')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -40,11 +39,16 @@ router.get('/register3', function(req, res, next) {
 router.post('/register3', function(req, res, next) {
   const cookies = new Cookies(req, res, { keys: keys })
   if (cookies.get("startRegistration")) {
-    let user = new User(req.body.email,req.body.firstName,req.body.lastName, req.body.password)
-    usersDB.set(user.email,user);
-    //req.session.tempUser = null; // clear session
-    //console.log(usersDB);
-    res.render('index', { title: 'Registration Successful, Please Login' });
+    const { email, firstName, lastName, password } = req.body;
+    return db.User.create({firstName,lastName,email,password})
+        .then((contact) => {
+          res.render('index', { title: 'Registration Successful, Please Login' });
+        })
+        .catch((err) => {
+          console.log('*** error creating a contact', JSON.stringify(contact))
+          res.render('index', { title: 'Registration Failed, Please Try Again' });
+          //return res.status(400).send(err)
+        })
   }
   else {
     // timeout
@@ -53,8 +57,51 @@ router.post('/register3', function(req, res, next) {
 
 });
 
-router.get('/allusers', function(req, res, next) {
-  res.send(...usersDB.entries());
+router.get('/login', function(req, res, next) {
+  if (req.user) {
+    res.redirect('/ex3')
+  }
+  else {
+    res.redirect("/");
+  }
 });
+
+router.post('/login', function(req, res, next) {
+  const { email, password } = req.body;
+  db.User.findOne({where: {email, password}})
+    .then((user) => {
+      if (user) {
+        req.session.user = user;
+        res.render('ex3', { title: 'Login Successful' });
+      }
+      else {
+        res.render('index', { title: 'Login Failed' });
+      }
+    })
+    .catch((err) => {
+      res.render('index', { title: 'Login Failed' });
+    })
+});
+
+router.get('/ex3', function(req, res, next) {
+  if (req.user) {
+    res.render('ex3', { title: '' });
+  }
+  else {
+    res.redirect("/");
+  }
+});
+
+router.get('/allusers', (req, res) => {
+  return db.User.findAll()
+      .then((alldata) =>
+      {
+        res.send(alldata)
+      })
+      .catch((err) => {
+        console.log('error', JSON.stringify(err))
+        return res.send({message: err})
+      });
+})
 
 module.exports = router;

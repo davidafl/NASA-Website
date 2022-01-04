@@ -10,7 +10,7 @@ function validateRegister1(event) {
         .then(status)
         .then(json)
         .then(function (response) {
-            if (response.user == true){
+            if (response.error == undefined){
                 //email exists!
                 document.getElementById("email").nextElementSibling.innerHTML = EMAIL_ERROR;
                 document.getElementById("email").classList.add("is-invalid");
