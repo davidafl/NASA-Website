@@ -1,0 +1,46 @@
+<%- include('partials/head.ejs') %>
+
+    <script src="js/register.js"></script>
+
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row justify-content-center text-center">
+        <div class="col-12 col-md-6">
+            <form method="post" action="/register2" id="register1">
+                <img class="mb-4" src="/images/nasa_logo.png" alt="" width="120" >
+                <h1 class="h3 mb-3 fw-normal">Please Register</h1>
+
+                <div><%= title %></div>
+
+                <div class="form-floating mb-1">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    <div class="text-danger text-start"></div>
+                    <label for="email">Email address</label>
+                </div>
+                <div class="form-floating mb-1">
+                    <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Password" required
+                           pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Please enter on alphabets only. ')">
+                    <label for="firstName">First Name</label>
+                </div>
+                <div class="form-floating mb-1">
+                    <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Password" required
+                           pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Please enter on alphabets only. ')">
+                    <label for="lastName">Last Name</label>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary mb-1" type="submit">Next</button>
+                <p class="mt-5 mb-3 text-muted">© David Aflalo</p>
+            </form>
+            <div>
+                <p>already registered?<a href="/">login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+</html>
